@@ -6,10 +6,10 @@ const ControlPanel = (props) => {
         <div className="ui segment">
             <div className="ui horizontal menu">
                 <div className="menu">
-                    <a onClick={()=>setSelected('Djikstra')} className="item">Djikstra's</a>
-                    <a onClick={()=>setSelected('BFS')} className="item">BFS</a>
-                    <a onClick={()=>setSelected('DFS')} className="item">DFS</a>
-                    <a onClick={()=>setSelected('A*')} className="item">A*</a>
+                    <div onClick={()=>setSelected('Djikstra')} className="item">Djikstra's</div>
+                    <div onClick={()=>setSelected('BFS')} className="item">BFS</div>
+                    <div onClick={()=>setSelected('DFS')} className="item">DFS</div>
+                    <div onClick={()=>setSelected('A*')} className="item">A*</div>
                 </div>
             </div>
             <button className="ui right labeled icon button" onClick={props.runButton()}>
