@@ -1,6 +1,10 @@
 import React from 'react';
 import Node from './Node';
 import {djikstra, getNodesInShortestPathOrder} from '../algorithms/djikstras';
+import {bfs} from '../algorithms/bfs';
+import {dfs} from '../algorithms/dfs';
+import {aStar} from '../algorithms/astar';
+
 import ControlPanel from './ControlPanel';
 import Legend from './Legend';
 
@@ -44,7 +48,7 @@ class PathFindingVisualizer extends React.Component {
         this.setState({mouseIsPressed: false});
     }
 
-    animateDjikstra(visitedNodesInOrder, nodesInShortestPathOrder){
+    animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder){
         for(let i = 0; i <= visitedNodesInOrder.length; i++){
             if (i === visitedNodesInOrder.length) {
                 setTimeout(() => {
@@ -77,8 +81,56 @@ class PathFindingVisualizer extends React.Component {
         // for clearing the board
         PREV_SHORTEST = nodesInShortestPathOrder;
         PREV_VISITED = visitedNodesInOrder;
-        this.animateDjikstra(visitedNodesInOrder, nodesInShortestPathOrder);
+        this.animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder);
     };
+
+    visualizeBFS = () => {
+        const {grid} = this.state;
+        const startNode = grid[START_NODE_ROW][START_NODE_COL];
+        const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
+        const visitedNodesInOrder = bfs(grid, startNode, finishNode);
+        const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
+        // for clearing the board
+        PREV_SHORTEST = nodesInShortestPathOrder;
+        PREV_VISITED = visitedNodesInOrder;
+        this.animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder);
+    };
+
+    visualizeDFS = () => {
+        const {grid} = this.state;
+        const startNode = grid[START_NODE_ROW][START_NODE_COL];
+        const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
+        const visitedNodesInOrder = dfs(grid, startNode, finishNode);
+        const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
+        // for clearing the board
+        PREV_SHORTEST = nodesInShortestPathOrder;
+        PREV_VISITED = visitedNodesInOrder;
+        this.animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder);
+    };
+
+    visualizeAStar = () => {
+        const {grid} = this.state;
+        const startNode = grid[START_NODE_ROW][START_NODE_COL];
+        const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
+        const visitedNodesInOrder = aStar(grid, startNode, finishNode);
+        const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
+        // for clearing the board
+        PREV_SHORTEST = nodesInShortestPathOrder;
+        PREV_VISITED = visitedNodesInOrder;
+        this.animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder);
+    };
+
+    visualizeAlg = (selected) => {
+        if(selected === 'Djikstra'){
+            return this.visualizeDjikstra();
+        }else if (selected === 'BFS'){
+            return this.visualizeBFS();
+        }else if (selected === 'DFS'){
+            return this.visualizeDFS();
+        }else if (selected === 'A*'){
+            return this.visualizeAStar();
+        }
+    }
 
     clearBoard = () => {
         const grid = getInitialGrid();
@@ -110,7 +162,7 @@ class PathFindingVisualizer extends React.Component {
         return(
             <div className="main">
                 <ControlPanel
-                    runButton={() => this.visualizeDjikstra}
+                    runButton={this.visualizeAlg}
                     clearButton={() => this.clearBoard}
                 />
                 <Legend />

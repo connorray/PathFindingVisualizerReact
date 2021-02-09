@@ -12,7 +12,7 @@ const ControlPanel = (props) => {
                     <div onClick={()=>setSelected('A*')} className="item">A*</div>
                 </div>
             </div>
-            <button className="ui right labeled icon button" onClick={props.runButton()}>
+            <button className="ui right labeled icon button" onClick={() => {props.runButton(selected)}}>
                 <i className="right arrow icon"></i>
                 {`Run ${selected}`}
             </button>
